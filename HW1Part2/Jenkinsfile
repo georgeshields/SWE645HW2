@@ -1,0 +1,20 @@
+pipeline {
+    agent any
+    stages {
+        stage('Build') {
+            steps {
+                script {
+                    docker.build('my-html-app')
+                }
+            }
+        }
+        stage('Deploy') {
+            steps {
+                script {
+                    kubectl.apply('deployment.yaml')
+                    kubectl.apply('service.yaml')
+                }
+            }
+        }
+    }
+}
