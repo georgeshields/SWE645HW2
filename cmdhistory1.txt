@@ -1,0 +1,45 @@
+    1  sudo apt update -y 
+    2  sudo apt install -y docker.io
+    3  sudo service docker start
+    4  sudo usermod -aG docker $(whoami)
+    5  exit
+    6  sudo apt install -y git
+    7  git clone https://github.com/georgeshields/ShieldsHW2.git
+    8  cd ShieldsHW2/
+    9  cd HW1Part2
+   10  cat Dockerfile 
+   11  vi deployment.yaml 
+   12  cat deployment.yaml 
+   13  vi service.yaml 
+   14  vi Jenkinsfile 
+   15  docker build -t app
+   16  ls
+   17  vi Dockerfile 
+   18  docker build -t app .
+   19  docker login
+   20  docker tag app:latest gshieldsgmu/app:latest
+   21  
+   22  ls
+   23  curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+   24  chmod +x ./kubectl
+   25  sudo mv ./kubectl /usr/local/bin/kubectl
+   26  kubectl version --client
+   27  curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+   28  chmod +x minikube
+   29  sudo mv minikube /usr/local/bin/
+   30  minikube version
+   31  kubectl apply -f deployment.yaml
+   32* 
+   33  kubectl apply -f deployment.yaml
+   34  minikube status
+   35  minikube start --driver=docker
+   36  minikube status
+   37  minikube start --driver=docker
+   38  sudo nano /etc/docker/daemon.json
+   39  minikube start --driver=docker
+   40  sudo systemctl restart docker
+   41  minikube start --driver=docker
+   42  ls
+   43  mkdir history
+   44  ls
+   45  history > history/cmdhistory1.txt

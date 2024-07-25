@@ -1,0 +1,269 @@
+Welcome to Ubuntu 24.04 LTS (GNU/Linux 6.8.0-1009-aws x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/pro
+
+ System information as of Thu Jul 25 06:49:08 UTC 2024
+
+  System load:  0.09              Processes:             109
+  Usage of /:   29.8% of 6.71GB   Users logged in:       0
+  Memory usage: 25%               IPv4 address for enX0: 172.31.90.187
+  Swap usage:   0%
+
+
+Expanded Security Maintenance for Applications is not enabled.
+
+32 updates can be applied immediately.
+16 of these updates are standard security updates.
+To see these additional updates run: apt list --upgradable
+
+Enable ESM Apps to receive additional future security updates.
+See https://ubuntu.com/esm or run: sudo pro status
+
+
+Last login: Thu Jul 25 06:43:56 2024 from 18.206.107.27
+ubuntu@ip-172-31-90-187:~$ sudo apt install -y git
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+git is already the newest version (1:2.43.0-1ubuntu7.1).
+git set to manually installed.
+0 upgraded, 0 newly installed, 0 to remove and 26 not upgraded.
+ubuntu@ip-172-31-90-187:~$ git clone https://github.com/georgeshields/ShieldsHW2.git
+Cloning into 'ShieldsHW2'...
+remote: Enumerating objects: 21, done.
+remote: Counting objects: 100% (21/21), done.
+remote: Compressing objects: 100% (18/18), done.
+remote: Total 21 (delta 2), reused 8 (delta 0), pack-reused 0
+Receiving objects: 100% (21/21), 82.11 KiB | 9.12 MiB/s, done.
+Resolving deltas: 100% (2/2), done.
+ubuntu@ip-172-31-90-187:~$ cd 
+.cache/     .ssh/       ShieldsHW2/ 
+ubuntu@ip-172-31-90-187:~$ cd ShieldsHW2/
+ubuntu@ip-172-31-90-187:~/ShieldsHW2$ cd 
+.git/     HW1Part1/ HW1Part2/ 
+ubuntu@ip-172-31-90-187:~/ShieldsHW2$ cd HW1Part2
+ubuntu@ip-172-31-90-187:~/ShieldsHW2/HW1Part2$ cat Dockerfile 
+# Use the official Nginx image as the base image
+FROM nginx:alpine
+
+# Copy the HTML files to the Nginx html directory
+COPY . /usr/share/nginx/html
+
+# Expose port 80
+EXPOSE 80
+ubuntu@ip-172-31-90-187:~/ShieldsHW2/HW1Part2$ cat 
+Dockerfile       Jenkinsfile      README.md        deployment.yaml  service.yaml     src/             
+ubuntu@ip-172-31-90-187:~/ShieldsHW2/HW1Part2$ vi deployment.yaml 
+ubuntu@ip-172-31-90-187:~/ShieldsHW2/HW1Part2$ cat deployment.yaml 
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: app
+        image: app:latest
+        ports:
+        - containerPort: 80
+ubuntu@ip-172-31-90-187:~/ShieldsHW2/HW1Part2$ vi service.yaml 
+ubuntu@ip-172-31-90-187:~/ShieldsHW2/HW1Part2$ vi Jenkinsfile 
+ubuntu@ip-172-31-90-187:~/ShieldsHW2/HW1Part2$ docker build -t app
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+"docker build" requires exactly 1 argument.
+See 'docker build --help'.
+
+Usage:  docker build [OPTIONS] PATH | URL | -
+
+Build an image from a Dockerfile
+ubuntu@ip-172-31-90-187:~/ShieldsHW2/HW1Part2$ ^C
+ubuntu@ip-172-31-90-187:~/ShieldsHW2/HW1Part2$ ls
+Dockerfile  Jenkinsfile  README.md  deployment.yaml  service.yaml  src
+ubuntu@ip-172-31-90-187:~/ShieldsHW2/HW1Part2$ vi Dockerfile 
+ubuntu@ip-172-31-90-187:~/ShieldsHW2/HW1Part2$ docker build -t app .
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon   12.8kB
+Step 1/3 : FROM nginx:alpine
+alpine: Pulling from library/nginx
+46b060cc2620: Pull complete 
+21af147d2ad5: Pull complete 
+b3ee43e51ca6: Pull complete 
+b17a9d410da1: Pull complete 
+542e3e75411d: Pull complete 
+2b2faad386df: Pull complete 
+a5e22afba545: Pull complete 
+fb923a41dc10: Pull complete 
+Digest: sha256:208b70eefac13ee9be00e486f79c695b15cef861c680527171a27d253d834be9
+Status: Downloaded newer image for nginx:alpine
+ ---> 1ae23480369f
+Step 2/3 : COPY src/ /usr/share/nginx/html
+ ---> fe0c6470d3ef
+Step 3/3 : EXPOSE 80
+ ---> Running in 762ca7957320
+Removing intermediate container 762ca7957320
+ ---> 89dea264023c
+Successfully built 89dea264023c
+Successfully tagged app:latest
+ubuntu@ip-172-31-90-187:~/ShieldsHW2/HW1Part2$ docker login
+Log in with your Docker ID or email address to push and pull images from Docker Hub. If you don't have a Docker ID, head over to https://hub.docker.com/ to create one.
+You can log in with your password or a Personal Access Token (PAT). Using a limited-scope PAT grants better security and is required for organizations using SSO. Learn more at https://docs.docker.com/go/access-tokens/
+
+Username: gshieldsgmu
+Password: 
+Error response from daemon: Get "https://registry-1.docker.io/v2/": unauthorized: incorrect username or password
+ubuntu@ip-172-31-90-187:~/ShieldsHW2/HW1Part2$ docker login
+Log in with your Docker ID or email address to push and pull images from Docker Hub. If you don't have a Docker ID, head over to https://hub.docker.com/ to create one.
+You can log in with your password or a Personal Access Token (PAT). Using a limited-scope PAT grants better security and is required for organizations using SSO. Learn more at https://docs.docker.com/go/access-tokens/
+
+Username: gshieldsgmu
+Password: 
+WARNING! Your password will be stored unencrypted in /home/ubuntu/.docker/config.json.
+Configure a credential helper to remove this warning. See
+https://docs.docker.com/engine/reference/commandline/login/#credentials-store
+
+Login Succeeded
+ubuntu@ip-172-31-90-187:~/ShieldsHW2/HW1Part2$ docker tag app:latest gshieldsgmu/app:latest
+ubuntu@ip-172-31-90-187:~/ShieldsHW2/HW1Part2$ docker push gshieldsgmu/app:latest
+The push refers to repository [docker.io/gshieldsgmu/app]
+d5b6196561b3: Pushed 
+28d40eb13793: Mounted from library/nginx 
+2ee64cbdc81d: Mounted from library/nginx 
+a0bde08c3815: Mounted from library/nginx 
+3be2be874bba: Mounted from library/nginx 
+fb5df5db7bbd: Mounted from library/nginx 
+eadc278e8f9e: Mounted from library/nginx 
+9dca7439e1b3: Mounted from library/nginx 
+b895814e9e64: Mounted from library/nginx 
+latest: digest: sha256:217f8871950405f0e4248ff4908614d863bf208baed1e51c096f10a6df12802f size: 2197
+ubuntu@ip-172-31-90-187:~/Shieldocker push gs  ^C
+ubuntu@ip-172-31-90-187:~/ShieldsHW2/HW1Part2$ ls
+Dockerfile  Jenkinsfile  README.md  deployment.yaml  service.yaml  src
+ubuntu@ip-172-31-90-187:~/ShieldsHW2/HW1Part2$ curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100   138  100   138    0     0   1651      0 --:--:-- --:--:-- --:--:--  1662
+100 49.0M  100 49.0M    0     0   102M      0 --:--:-- --:--:-- --:--:--  102M
+ubuntu@ip-172-31-90-187:~/ShieldsHW2/HW1Part2$ chmod +x ./kubectl
+ubuntu@ip-172-31-90-187:~/ShieldsHW2/HW1Part2$ chmod +x ./kubectl
+ubuntu@ip-172-31-90-187:~/ShieldsHW2/HW1Part2$ ls^C
+ubuntu@ip-172-31-90-187:~/ShieldsHW2/HW1Part2$ sudo mv ./kubectl /usr/local/bin/kubectl
+ubuntu@ip-172-31-90-187:~/ShieldsHW2/HW1Part2$ kubectl version --client
+Client Version: v1.30.3
+Kustomize Version: v5.0.4-0.20230601165947-6ce0bf390ce3
+ubuntu@ip-172-31-90-187:~/ShieldsHW2/HW1Part2$ curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100 91.1M  100 91.1M    0     0   108M      0 --:--:-- --:--:-- --:--:--  108M
+ubuntu@ip-172-31-90-187:~/ShieldsHW2/HW1Part2$ chmod +x minikube
+ubuntu@ip-172-31-90-187:~/ShieldsHW2/HW1Part2$ sudo mv minikube /usr/local/bin/
+ubuntu@ip-172-31-90-187:~/ShieldsHW2/HW1Part2$ minikube version
+minikube version: v1.33.1
+commit: 5883c09216182566a63dff4c326a6fc9ed2982ff
+ubuntu@ip-172-31-90-187:~/ShieldsHW2/HW1Part2$ kubectl apply -f deployment.yaml
+error: error validating "deployment.yaml": error validating data: failed to download openapi: Get "http://localhost:8080/openapi/v2?timeout=32s": dial tcp 127.0.0.1:8080: connect: connection refused; if you choose to ignore these errors, turn validation off with --validate=false
+ubuntu@ip-172-31-90-187:~/ShieldsHW2/HW1Part2$ ls
+Dockerfile  Jenkinsfile  README.md  deployment.yaml  service.yaml  src
+ubuntu@ip-172-31-90-187:~/ShieldsHW2/HW1Part2$ kubectl apply -f deployment.yaml
+error: error validating "deployment.yaml": error validating data: failed to download openapi: Get "http://localhost:8080/openapi/v2?timeout=32s": dial tcp 127.0.0.1:8080: connect: connection refused; if you choose to ignore these errors, turn validation off with --validate=false
+ubuntu@ip-172-31-90-187:~/ShieldsHW2/HW1Part2$ ^C
+ubuntu@ip-172-31-90-187:~/ShieldsHW2/HW1Part2$ minikube status
+* Profile "minikube" not found. Run "minikube profile list" to view all profiles.
+  To start a cluster, run: "minikube start"
+ubuntu@ip-172-31-90-187:~/ShieldsHW2/HW1Part2$ minikube start --driver=docker
+* minikube v1.33.1 on Ubuntu 24.04 (xen/amd64)
+* Using the docker driver based on user configuration
+
+X Exiting due to RSRC_INSUFFICIENT_CORES: Docker has less than 2 CPUs available, but Kubernetes requires at least 2 to be available
+
+ubuntu@ip-172-31-90-187:~/ShieldsHW2/HW1Part2$ minikube status
+* Profile "minikube" not found. Run "minikube profile list" to view all profiles.
+  To start a cluster, run: "minikube start"
+ubuntu@ip-172-31-90-187:~/ShieldsHW2/HW1Part2$ minikube start --driver=docker
+* minikube v1.33.1 on Ubuntu 24.04 (xen/amd64)
+* Using the docker driver based on user configuration
+
+X Exiting due to RSRC_INSUFFICIENT_CORES: Docker has less than 2 CPUs available, but Kubernetes requires at least 2 to be available
+
+ubuntu@ip-172-31-90-187:~/ShieldsHW2/HW1Part2$ sudo nano /etc/docker/daemon.json
+ubuntu@ip-172-31-90-187:~/ShieldsHW2/HW1Part2$ minikube start --driver=docker
+* minikube v1.33.1 on Ubuntu 24.04 (xen/amd64)
+* Using the docker driver based on user configuration
+
+X Exiting due to RSRC_INSUFFICIENT_CORES: Docker has less than 2 CPUs available, but Kubernetes requires at least 2 to be available
+
+ubuntu@ip-172-31-90-187:~/ShieldsHW2/HW1Part2$ sudo systemctl restart docker
+ubuntu@ip-172-31-90-187:~/ShieldsHW2/HW1Part2$ minikube start --driver=docker
+* minikube v1.33.1 on Ubuntu 24.04 (xen/amd64)
+* Using the docker driver based on user configuration
+
+X Exiting due to RSRC_INSUFFICIENT_CORES: Docker has less than 2 CPUs available, but Kubernetes requires at least 2 to be available
+
+ubuntu@ip-172-31-90-187:~/ShieldsHW2/HW1Part2$ ls
+Dockerfile  Jenkinsfile  README.md  deployment.yaml  service.yaml  src
+ubuntu@ip-172-31-90-187:~/ShieldsHW2/HW1Part2$ mkdir history
+ubuntu@ip-172-31-90-187:~/ShieldsHW2/HW1Part2$ ls
+Dockerfile  Jenkinsfile  README.md  deployment.yaml  history  service.yaml  src
+ubuntu@ip-172-31-90-187:~/ShieldsHW2/HW1Part2$ history > history/cmdhistory1.txt
+ubuntu@ip-172-31-90-187:~/ShieldsHW2/HW1Part2$ cd history/
+ubuntu@ip-172-31-90-187:~/ShieldsHW2/HW1Part2/history$ cat cmdhistory1.txt 
+    1  sudo apt update -y 
+    2  sudo apt install -y docker.io
+    3  sudo service docker start
+    4  sudo usermod -aG docker $(whoami)
+    5  exit
+    6  sudo apt install -y git
+    7  git clone https://github.com/georgeshields/ShieldsHW2.git
+    8  cd ShieldsHW2/
+    9  cd HW1Part2
+   10  cat Dockerfile 
+   11  vi deployment.yaml 
+   12  cat deployment.yaml 
+   13  vi service.yaml 
+   14  vi Jenkinsfile 
+   15  docker build -t app
+   16  ls
+   17  vi Dockerfile 
+   18  docker build -t app .
+   19  docker login
+   20  docker tag app:latest gshieldsgmu/app:latest
+   21  
+   22  ls
+   23  curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+   24  chmod +x ./kubectl
+   25  sudo mv ./kubectl /usr/local/bin/kubectl
+   26  kubectl version --client
+   27  curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+   28  chmod +x minikube
+   29  sudo mv minikube /usr/local/bin/
+   30  minikube version
+   31  kubectl apply -f deployment.yaml
+   32* 
+   33  kubectl apply -f deployment.yaml
+   34  minikube status
+   35  minikube start --driver=docker
+   36  minikube status
+   37  minikube start --driver=docker
+   38  sudo nano /etc/docker/daemon.json
+   39  minikube start --driver=docker
+   40  sudo systemctl restart docker
+   41  minikube start --driver=docker
+   42  ls
+   43  mkdir history
+   44  ls
+   45  history > history/cmdhistory1.txt
