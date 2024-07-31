@@ -9,7 +9,7 @@ pipeline {
                 script {
                     checkout scm
                     sh 'echo ${BUILD_TIMESTAMP}'
-                    sh 'echo $DOCKERHUB_PASS | docker login -u gshieldsgmu --password-stdin'
+                    sh 'docker login -u gshieldsgmu -p DOCKERHUB_PASS_PSW'
                     def customImage = docker.build("gshieldsgmu/app:${BUILD_TIMESTAMP}")
                 }
             }
