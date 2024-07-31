@@ -38,15 +38,11 @@ pipeline {
                 }
             }
         }
-        // stage('Deploying to Rancher as single pod') {
-        //     steps {
-        //         sh 'kubectl set image deployment/stusurvey-pipeline stusurvey-pipeline=hekme5/studentsurvey645:${BUILD_TIMESTAMP} -n jenkins-pipeline'
-        //     }
-        // }
-        // stage('Deploying to Rancher as with load balancer') {
-        //     steps {
-        //         sh 'kubectl set image deployment/studentsurvey645-lb studentsurvey645-lb=hekme5/studentsurvey645:${BUILD_TIMESTAMP} -n jenkins-pipeline'
-        //     }
-        // }
+        stage('Deploying to Kubernetes') {
+            steps {
+                sh 'kubectl --kubeconfig=/var/lib/jenkins/.kube/config set image deployment/app app=gshieldsgmu/app:${IMAGE_TAG} -n default'
+
+            }
+        }
     }
 }
