@@ -2,6 +2,7 @@ pipeline {
     agent any
     environment {
         DOCKERHUB_PASS = credentials('docker-pass')
+        IMAGE_TAG = "${env.BUILD_TIMESTAMP ?: 'latest'}"
     }
     stages {
         stage('Building the Student Survey Image') {
@@ -10,14 +11,14 @@ pipeline {
                     checkout scm
                     sh 'echo ${BUILD_TIMESTAMP}'
                     sh "docker login -u gshieldsgmu -p $DOCKERHUB_PASS_PSW"
-                    sh 'docker build -t gshieldsgmu/app:${BUILD_TIMESTAMP} .'
+                    sh 'docker build -t gshieldsgmu/app:${IMAGE-TAG} .'
                 }
             }
         }
         stage('Pushing Image to DockerHub') {
             steps {
                 script {
-                    sh 'docker push gshieldsgmu/app:${BUILD_TIMESTAMP}'
+                    sh 'docker push gshieldsgmu/app:${IMAGE-TAG}'
                 }
             }
         }
