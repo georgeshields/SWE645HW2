@@ -1,20 +1,35 @@
 pipeline {
     agent any
+    environment {
+        DOCKERHUB_PASS = credentials('docker-pass')
+    }
     stages {
-        stage('Build') {
+        stage('Building the Student Survey Image') {
             steps {
                 script {
-                    docker.build('app')
+                    checkout scm
+                    sh 'echo ${BUILD_TIMESTAMP}'
+                    sh 'docker login -u gshieldsgmu -p ${DOCKERHUB_PASS}'
+                    def customImage = docker.build("gshieldsgmu/app:${BUILD_TIMESTAMP}")
                 }
             }
         }
-        stage('Deploy') {
+        stage('Pushing Image to DockerHub') {
             steps {
                 script {
-                    kubectl.apply('deployment.yaml')
-                    kubectl.apply('service.yaml')
+                    sh 'docker push gshieldsgmu/app:${BUILD_TIMESTAMP}'
                 }
             }
         }
+        // stage('Deploying to Rancher as single pod') {
+        //     steps {
+        //         sh 'kubectl set image deployment/stusurvey-pipeline stusurvey-pipeline=hekme5/studentsurvey645:${BUILD_TIMESTAMP} -n jenkins-pipeline'
+        //     }
+        // }
+        // stage('Deploying to Rancher as with load balancer') {
+        //     steps {
+        //         sh 'kubectl set image deployment/studentsurvey645-lb studentsurvey645-lb=hekme5/studentsurvey645:${BUILD_TIMESTAMP} -n jenkins-pipeline'
+        //     }
+        // }
     }
 }
